@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package commonpb;
+option go_package = "pb/commonpb";
+
+service AdminService {
+  // Server streaming RPC
+  rpc GetTables(Empty) returns (stream GetTablesResponse) {}
+  rpc GetEngineStatus(Empty) returns (GameEngineStatus) {}
+  rpc GetTableCatalog(TableCatalogRequest) returns (TableCatalogResponse) {}
+  rpc GetRedLimit(RedLimitRequest) returns (RedLimitResponse) {}
+  rpc GetRedLimitByLimitID(RedLimitRequestById) returns (RedLimitByIdResponse) {}
+  rpc GetOddsBatch(GetOddsBatchRequest) returns (GetOddsBatchResponse);
+  rpc UpdateDealerTableOnlineStatus(UpdateDealerTableOnlineStatusRequest) returns (UpdateDealerTableOnlineStatusResponse);
+}
+
+message Empty {}
+
+message GetTablesResponse {
+  uint64 id = 1;
+  string table_no=2;
+  uint64 hall_id=3;
+  uint64 game_id=4;
+  string mode = 5;
+  uint32 betting_time = 6; // seconds
+  uint32 settlement_time = 7; // seconds
+  string status = 8;
+  string kafka_topic = 9;
+  uint64 game_type_id =10;
+}
+
+message GameEngineStatus {
+  bool status = 1;
+}
+
+
+message TableCatalogRequest {
+  uint64 game_id = 1; // optional, 0 = no filter
+  string table_id = 2; // optional, 0 = no filter
+  string language = 3;    // optional, e.g. "en", "kh", "ch"
+  uint64 user_id =4;
+}
+
+message TableCatalogItem {
+  uint64 game_id = 1;
+  string game_name = 2;
+
+  uint64 hall_id = 3;
+  string hall_name = 4;
+  int32 hall_sort = 5;
+
+  uint64 table_id = 6;
+  string table_no = 7;
+  string table_name = 8;
+
+  uint32 play_type = 9;
+
+  string status = 10;
+  string app_icon = 11;
+  string pc_icon = 12;
+
+  uint32 bet_second = 13;
+  uint32 calc_second = 14;
+  uint64 game_type = 15;
+  repeated ResolutionList  resolutionList = 16;
+  string mode = 17;
+}
+
+
+message TableCatalogResponse {
+  repeated TableCatalogItem tables = 1;
+}
+
+message RedLimitRequest {
+  uint64 game_id = 1; // optional, 0 = no filter
+  string language = 2;    // optional, e.g. "en", "kh", "ch"
+  string currency= 3;
+}
+
+message RedLimitResponse {
+  bytes datas = 1;
+}
+
+message RedLimitRequestById {
+  uint64 limit_id = 1; 
+}
+
+message RedLimitByIdResponse {
+  bytes datas = 1;
+}
+message OddsItem {
+  uint64 game_play_type = 1;
+  string bet_code = 2;
+}
+
+message GetOddsBatchRequest {
+  repeated OddsItem items = 1;
+}
+
+message OddsResult {
+  string bet_code = 1;
+  double odds = 3;
+}
+
+message GetOddsBatchResponse {
+  repeated OddsResult results = 1;
+}
+
+
+message ResolutionList {
+  int32 resolutionType    = 1;   // type 420, 720, 1080
+  string roomName  = 2;   // room name
+}
+
+message UpdateDealerTableOnlineStatusRequest {
+    string table_no = 1;
+    uint64 game_id = 2;
+    uint64 table_online_status = 3;
+}
+message UpdateDealerTableOnlineStatusResponse {
+    bool success = 1;
+    string message = 2;
+}

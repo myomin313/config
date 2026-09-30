@@ -1,0 +1,9 @@
+.env
+compose.yml
+/tmp
+/nacos
+docker-compose.yml
+/docs/
+/logs
+.github/
+/vendor

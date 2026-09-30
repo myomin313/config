@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package commonpb;
+
+option go_package = "pb/commonpb";
+
+service RoundService {
+    rpc GetRound(RoundEmpty) returns (RoundResponse);
+    rpc GetRoundById(GetRoundByIdRequest) returns (GetRoundByIdResponse);
+    rpc UpdateRoundRemark(UpdateRoundRemarkRequest) returns (UpdateRoundRemarkResponse);
+    rpc UpdateRoundResult(UpdateRoundResultRequest) returns (UpdateRoundResultResponse);
+
+}
+
+message RoundEmpty {
+    int32 page_no = 1;
+    int32 page_size = 2;
+    uint64  game_id = 3;
+    uint64 shoe_no = 4;
+    uint64 round_no = 5;
+    string table_no = 6;
+    string status = 7;
+    string result_time = 8;
+    string end_date = 9;
+    string start_date = 10;
+}
+
+message RoundResponse {
+   repeated GetRoundData round = 1;
+    bool found  = 2;
+    uint64 total = 3;
+}
+
+message GetRoundData {
+  uint64 id = 1;
+  uint64 table_id = 2;
+  uint64 shoe_no = 3;
+  uint64 round_no = 4;
+  string status = 5;
+  uint32 dice1 = 6;
+  uint32 dice2 = 7;
+  uint32 dice3 = 8;
+  string betting_start_at = 9;
+  string settled_at = 10;
+  string table_no = 11;
+  uint64 game_id = 12;
+  string game_name = 13;
+  string remark = 14;
+  uint32 original_dice1 = 15;
+  uint32 original_dice2 = 16;
+  uint32 original_dice3 = 17;
+}
+
+message UpdateRoundRemarkRequest {
+    uint64 id = 1;
+    string remark = 2;
+}
+
+message UpdateRoundRemarkResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message UpdateRoundResultRequest {
+    uint64 id = 1;
+    uint32 dice1 = 2;
+    uint32 dice2 = 3;
+    uint32 dice3 = 4;
+    string remark = 5;
+    string status = 6;
+}
+
+message UpdateRoundResultResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message GetRoundByIdRequest {
+    uint64 id = 1;
+}
+
+message GetRoundByIdResponse {
+    GetRoundData round = 1;
+    bool found = 2;
+}

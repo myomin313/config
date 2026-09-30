@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package commonpb;
+
+option go_package = "pb/commonpb";
+
+service PlatformService {
+    rpc GetPlatform(PlatformEmpty) returns (PlatformResponse);
+}
+
+message PlatformEmpty {}
+
+message PlatformApiKeyMessage {
+    uint64 id = 1;
+    string key = 2;
+    string secret = 3;
+    string status = 4;
+}
+
+message PlatformResponse {
+    uint64 id = 1;
+    string merchant_code = 2;
+    string name = 3;
+    string email = 4;
+    string status = 5;
+    repeated string ip_allowlist = 6;
+    PlatformApiKeyMessage api_key = 7;
+    repeated MerchantCurrencyMessage merchant_currencies = 8;
+    bool found = 9;
+}
+message MerchantCurrencyMessage {
+  uint64 id = 1;
+  string merchant_code = 2;
+  string currency = 3;
+}

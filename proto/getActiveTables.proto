@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package commonpb;
+option go_package = "pb/commonpb";
+
+service GameTableActiveService {
+  // Server streaming RPC
+  rpc GetActiveTables(GameTableRequest) returns (stream GetActiveTablesResponse) {}
+}
+message GameTableRequest {
+          uint32 game_type = 1;
+optional  uint32 affiliate_office = 2;
+}
+message GetActiveTablesResponse {
+  uint64 id = 1;
+  string mode = 2;
+  uint32 betting_time = 3; 
+  uint32 settlement_time = 4; 
+  string status = 5;
+  uint32 affiliate_office = 6;
+  uint32 game_type = 7;
+  string table_number = 8;
+  string mobile_icon = 9;
+  uint32 sort=10;
+  string pc_icon=11;
+}

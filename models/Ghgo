@@ -1,0 +1,22 @@
+package models
+
+import (
+	"time"
+)
+
+type GameHall struct {
+	ID          uint64 `gorm:"primaryKey;autoIncrement"`
+	Status      string `gorm:"default:disable"`
+	CreatedByID uint   `json:"created_by_id"`
+	UpdatedByID uint   `json:"updated_by_id"`
+	SortOrder   uint   `json:"sort_order"`
+
+	CreatedAt *time.Time `gorm:"autoCreateTime"`
+	UpdatedAt *time.Time `gorm:"autoUpdateTime"`
+
+	Translations []GameTranslation `gorm:"polymorphic:Table;"`
+}
+
+func init() {
+	RegisterModel(&GameHall{})
+}

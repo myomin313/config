@@ -1,0 +1,42 @@
+FROM golang:1.25-alpine
+
+# Install OS dependencies for protobuf + build tools
+RUN apk add --no-cache \
+    build-base \
+    protobuf \
+    protobuf-dev \
+    protoc \
+    bash-completion \
+    curl
+
+WORKDIR /app
+
+# Create www-data user & group only if not exists
+RUN getent group www-data || addgroup -g 1000 www-data \
+    && getent passwd www-data || adduser -D -u 1000 -G www-data www-data
+
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of the app
+COPY . .
+
+# Ensure app directory is owned by www-data
+RUN chown -R www-data:www-data /app
+
+# Install dev tools (still as root)
+RUN go install github.com/air-verse/air@v1.66.0 \
+    && go install github.com/swaggo/swag/cmd/swag@latest \
+    && go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.30.0 \
+    && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.3.0
+
+# Make sure Go bin is in PATH
+ENV PATH="/go/bin:${PATH}"
+
+EXPOSE 3000
+
+#Switch to non-root user
+USER www-data
+
+CMD ["air"]

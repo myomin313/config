@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package commonpb;
+
+option go_package = "pb/commonpb";
+
+service GameService {
+    rpc GetGamesByIds(GameIdsRequest) returns (GameListResponse);
+    rpc GetHallNames(HallNamesRequest) returns (HallListResponse);
+}
+
+
+message GameIdsRequest {
+    repeated uint64 ids = 1;
+    string language_code = 2;
+}
+
+message GameItem {
+    uint64 id = 1;
+    string name = 2;
+}
+
+message GameListResponse {
+    repeated GameItem games = 1;
+}
+
+message HallNamesRequest {
+   repeated uint64 ids = 1;
+    string language_code = 2;
+}
+
+message HallItem {
+uint64 id = 1;
+string name = 2;
+}
+
+message HallListResponse {
+repeated HallItem halls = 1;
+}

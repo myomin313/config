@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package commonpb;
+
+option go_package = "pb/commonpb";
+
+service AuthService {
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+}
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message GetUserResponse {
+  int64 id = 1;
+  string name = 2;
+}

@@ -1,0 +1,11 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "swag init -g main.go && go build -o tmp/server ."
+  bin = "tmp/server"
+  include_ext = ["go"]
+  exclude_dir = ["vendor", "tmp", "docs"]
+
+[run]
+  cmd = "./tmp/server"

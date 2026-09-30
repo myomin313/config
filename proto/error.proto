@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package commonpb;
+
+option go_package = "pb/commonpb";
+
+// Generic API response wrapper
+message ErrorResponse {
+  int32 code = 1;
+  string message = 2;
+  string datas = 3; // this will contain serialized inner message
+}

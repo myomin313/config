@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package commonpb;
+
+option go_package = "pb/commonpb";
+
+// Generic API response wrapper
+message Response {
+  int32 code = 1;
+  string message = 2;
+  bytes datas = 3;
+}
